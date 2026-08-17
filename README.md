@@ -1,4 +1,5 @@
 # 🎬 Station of Vision
+![image](img/thumbl.jfif)
 
 **Station of Vision**, yaratıcı süreçler ile dijital dosya yönetimi arasındaki hantallığı ortadan kaldıran, post-prodüksiyon iş akışları için tasarlanmış akıllı bir yerel ağ (localhost) ve medya aktarım istasyonudur.
 
