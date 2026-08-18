@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Station of Vision - Yerel Medya İstasyonu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-left">
+            <a href="/" class="brand-logo">
+                <img src="/static/img/text_with_logo.jpg" alt="Station of Vision" class="logo-img">
+            </a>
+            <nav class="nav-links">
+                <a href="#browse" class="nav-link active">Göz At</a>
+                <a href="#categories" class="nav-link">Kategoriler</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Video veya film ara..." autocomplete="off">
+            </div>
+            <a href="/admin" class="admin-btn" title="Yönetici Paneli">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>Yönetici</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Showcase (Featured Video) -->
+    <section class="hero-showcase" id="heroShowcase">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Öne Çıkan İçerik</div>
+            <h1 class="hero-title" id="heroTitle">Medya Kütüphanesi Hazırlanıyor...</h1>
+            <p class="hero-desc" id="heroDesc">Yerel ağınızdaki tüm video içeriklerine tek bir ekrandan kesintisiz ve yüksek performansla erişin.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="heroPlayBtn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    Oynat
+                </button>
+                <button class="btn btn-secondary" id="heroInfoBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Bilgi
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content: Category Rows -->
+    <main class="content-area" id="categories">
+        <div id="categoryContainer" class="category-container">
+            <!-- Dynamic Category Rows will be injected here -->
+            <div class="loading-spinner-container" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>İçerikler taranıyor ve listeleniyor...</p>
+            </div>
+        </div>
+
+        <!-- Empty State Message -->
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">📁</div>
+            <h2>Henüz Görüntülenecek Video Bulunamadı</h2>
+            <p>Admin panelinden video içeren klasörleri ekleyerek veya etkinleştirerek başlayabilirsiniz.</p>
+            <a href="/admin" class="btn btn-primary">Admin Paneline Git</a>
+        </div>
+    </main>
+
+    <!-- Video Player Modal -->
+    <div class="player-modal" id="playerModal">
+        <div class="player-backdrop" id="playerBackdrop"></div>
+        <div class="player-wrapper">
+            <div class="player-header">
+                <div class="player-title" id="playerVideoTitle">Video Başlığı</div>
+                <button class="close-btn" id="closePlayerBtn" title="Kapat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="video-container">
+                <video id="mainVideoPlayer" controls autoplay playsinline preload="metadata">
+                    <source src="" type="video/mp4" id="videoSource">
+                    Tarayıcınız video oynatmayı desteklemiyor.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

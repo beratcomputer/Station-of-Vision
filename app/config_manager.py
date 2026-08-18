@@ -5,9 +5,16 @@ Manages config.json for admin settings and allowed directories.
 
 import json
 import os
+import sys
 from pathlib import Path
 
-CONFIG_PATH = Path(__file__).parent.parent / "config.json"
+if getattr(sys, 'frozen', False):
+    ROOT_DIR = Path(sys.executable).parent
+else:
+    ROOT_DIR = Path(__file__).parent.parent
+
+CONFIG_PATH = ROOT_DIR / "config.json"
+
 
 DEFAULT_CONFIG = {
     "admin_password": "admin123",

@@ -5,11 +5,18 @@ Uses OpenCV to extract a frame from video files and save as JPEG thumbnails.
 
 import hashlib
 import os
+import sys
 
 import cv2
 from pathlib import Path
 
-THUMBNAILS_DIR = Path(__file__).parent.parent / "thumbnails"
+if getattr(sys, 'frozen', False):
+    ROOT_DIR = Path(sys.executable).parent
+else:
+    ROOT_DIR = Path(__file__).parent.parent
+
+THUMBNAILS_DIR = ROOT_DIR / "thumbnails"
+
 
 # Thumbnail dimensions (16:9)
 THUMB_WIDTH = 320

@@ -9,20 +9,35 @@ from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import os
+import sys
 import base64
 import secrets
 import string
 
-from .config_manager import (
+from app.config_manager import (
     load_config, save_config, get_allowed_directories,
     add_directory, remove_directory, toggle_directory,
     verify_password, change_password,
 )
-from .thumbnail import generate_thumbnail
+from app.thumbnail import generate_thumbnail
 
-# ─── Setup ───────────────────────────────────────────────────────────────────
 
-BASE_DIR = Path(__file__).parent.parent
+# Setup Base Path (Supports PyInstaller bundle and direct run)
+if getattr(sys, 'frozen', False):
+    BASE_DIR = Path(getattr(sys, '_MEIPASS', sys.executable))
+    # If static is alongside the EXE, prefer it
+    EXE_DIR = Path(sys.executable).parent
+    if (EXE_DIR / "static").exists():
+        STATIC_DIR = EXE_DIR / "static"
+        TEMPLATES_DIR = EXE_DIR / "templates"
+    else:
+        STATIC_DIR = BASE_DIR / "static"
+        TEMPLATES_DIR = BASE_DIR / "templates"
+else:
+    BASE_DIR = Path(__file__).parent.parent
+    STATIC_DIR = BASE_DIR / "static"
+    TEMPLATES_DIR = BASE_DIR / "templates"
+
 
 app = FastAPI(title="Station of Vision")
 
@@ -56,10 +71,11 @@ app.add_middleware(
 
 
 # Serve static assets (CSS, JS, images)
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 # Simple in-memory admin session tokens
 _admin_tokens: set[str] = set()
+
 
 # ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -145,13 +161,14 @@ def _verify_admin(request: Request) -> None:
 @app.get("/", response_class=HTMLResponse)
 async def page_home():
     """Serve the main Netflix-style UI."""
-    return (BASE_DIR / "templates" / "index.html").read_text(encoding="utf-8")
+    return (TEMPLATES_DIR / "index.html").read_text(encoding="utf-8")
 
 
 @app.get("/admin", response_class=HTMLResponse)
 async def page_admin():
     """Serve the admin panel."""
-    return (BASE_DIR / "templates" / "admin.html").read_text(encoding="utf-8")
+    return (TEMPLATES_DIR / "admin.html").read_text(encoding="utf-8")
+
 
 
 # ─── Public API ──────────────────────────────────────────────────────────────
