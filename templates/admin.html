@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Station of Vision - Yönetici Paneli</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    <!-- Background Decor -->
+    <div class="bg-glow"></div>
+
+    <!-- Login Screen -->
+    <div class="login-wrapper" id="loginScreen">
+        <div class="login-card">
+            <div class="logo-area">
+                <img src="/static/img/text_with_logo.jpg" alt="Station of Vision" class="admin-logo">
+            </div>
+            <h2>Yönetici Girişi</h2>
+            <p class="login-subtitle">Medya dizinlerini yönetmek için şifrenizi girin</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <label for="adminPassword">Yönetici Şifresi</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <div id="loginError" class="alert-error hidden">Hatalı şifre. Lütfen tekrar deneyin.</div>
+                <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+            </form>
+            <div class="login-footer">
+                <a href="/" class="back-link">← Ana Sayfaya Dön</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (After Login) -->
+    <div class="dashboard-wrapper hidden" id="dashboardScreen">
+        <!-- Top Nav -->
+        <header class="admin-header">
+            <div class="header-left">
+                <a href="/" class="brand-logo">
+                    <img src="/static/img/text_with_logo.jpg" alt="Station of Vision" class="logo-img">
+                </a>
+                <span class="badge-admin">Admin Konsolu</span>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn btn-outline" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Siteyi Gör
+                </a>
+                <button id="logoutBtn" class="btn btn-secondary">Çıkış Yap</button>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Toast notification -->
+            <div id="toast" class="toast hidden"></div>
+
+            <div class="dashboard-grid">
+                <!-- Left: Allowed Directories List -->
+                <section class="panel-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Yayınlanan Video Dizinleri</h2>
+                            <p>Ana sayfada listelenen ve kullanıcılara açık olan klasörler</p>
+                        </div>
+                        <button id="refreshDirsBtn" class="btn-icon" title="Yenile">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                        </button>
+                    </div>
+
+                    <div id="directoriesList" class="directories-list">
+                        <!-- Dynamic directory cards will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Right: Add Directory & Settings -->
+                <aside class="panel-sidebar">
+                    <!-- Add Directory Card -->
+                    <div class="admin-card">
+                        <h3>Yeni Dizin Ekle</h3>
+                        <p class="card-desc">Sunucudaki bir video klasörünü listeye dahil edin.</p>
+
+                        <div class="form-group">
+                            <label>Dizin Yolu</label>
+                            <div class="input-with-action">
+                                <input type="text" id="newDirPath" placeholder="Örn: D:\Filmler veya C:\Videolar">
+                                <button id="openBrowserModalBtn" class="btn btn-secondary btn-sm" title="Dosya Gezgini">Gözat</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kategori Görünen Adı (Opsiyonel)</label>
+                            <input type="text" id="newDirName" placeholder="Örn: Aksiyon Filmleri">
+                        </div>
+
+                        <button id="addDirectoryBtn" class="btn btn-primary btn-block">Dizini Yayına Ekle</button>
+                    </div>
+
+                    <!-- Change Password Card -->
+                    <div class="admin-card">
+                        <h3>Güvenlik & Şifre</h3>
+                        <p class="card-desc">Yönetici paneli giriş şifresini değiştirin.</p>
+                        
+                        <div class="form-group">
+                            <label>Yeni Şifre</label>
+                            <input type="password" id="newAdminPassword" placeholder="Yeni şifreniz...">
+                        </div>
+
+                        <button id="changePasswordBtn" class="btn btn-secondary btn-block">Şifreyi Güncelle</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Directory Browser Modal -->
+    <div class="modal" id="browserModal">
+        <div class="modal-backdrop" id="browserModalBackdrop"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Sunucu Dosya Gezgini</h3>
+                <button class="modal-close" id="closeBrowserModalBtn">✕</button>
+            </div>
+            <div class="browser-current-path" id="browserCurrentPath">Sürücüler</div>
+            <div class="browser-body">
+                <div id="browserItemsList" class="browser-items-list">
+                    <!-- Dynamic directory entries -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBrowserBtn">İptal</button>
+                <button class="btn btn-primary" id="selectCurrentFolderBtn">Bu Klasörü Seç</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Thumbnails (auto-generated)
+thumbnails/
+
+# Config (contains password)
+config.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
